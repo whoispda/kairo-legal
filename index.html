@@ -164,8 +164,9 @@
   #kaiSvg.mood-recovery{--kai-rim:#6FAEBA}
   #kaiSvg.mood-recovery .kai-eye{fill:#C6E2E8;transform:scaleY(.55)}
   #kaiSvg.mood-recovery #kaiBody{filter:drop-shadow(0 0 11px rgba(111,174,186,.4))}
-  #kaiSvg.mood-celebrating{--kai-rim:#E0C684}
-  #kaiSvg.mood-celebrating #kaiBody{filter:drop-shadow(0 0 13px rgba(224,198,132,.5))}
+  #kaiSvg.mood-celebrating{--kai-rim:#F2CC6B}
+  #kaiSvg.mood-celebrating .kai-eye{fill:#FCE69E}
+  #kaiSvg.mood-celebrating #kaiBody{filter:drop-shadow(0 0 15px rgba(242,204,107,.6))}
   .kaimoods{margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
   .moodchip{font:600 11px/1 -apple-system,BlinkMacSystemFont,system-ui,sans-serif;
     letter-spacing:1.2px;text-transform:uppercase;padding:8px 13px;border-radius:999px;
@@ -175,7 +176,7 @@
   .moodchip[data-mood="coaching"].on{background:#EAD7AE}
   .moodchip[data-mood="fasting"].on{background:#C05244;color:#fff}
   .moodchip[data-mood="recovery"].on{background:#6FAEBA}
-  .moodchip[data-mood="celebrating"].on{background:#E0C684}
+  .moodchip[data-mood="celebrating"].on{background:#F2CC6B}
 
   .quotes{display:grid;gap:12px}
   .quote{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px 18px;
@@ -650,7 +651,7 @@
       recovery: "M -4 14 Q 0 16.5 4 14",
       celebrating: "M -6 12 Q 0 19 6 12"
     };
-    var RIMS = { coaching: "#EAD7AE", fasting: "#C05244", recovery: "#6FAEBA", celebrating: "#E0C684" };
+    var RIMS = { coaching: "#EAD7AE", fasting: "#C05244", recovery: "#6FAEBA", celebrating: "#F2CC6B" };
     var mood = "coaching";
     kaiSvgEl.dataset.mood = "coaching";
     function sparks() {
@@ -788,7 +789,7 @@
             c.setAttribute("cx", String(-24 + Math.random() * 48));
             c.setAttribute("cy", String(-40 - Math.random() * 6));
             c.setAttribute("r", String(1.6 + Math.random() * 1.6));
-            c.setAttribute("fill", "#E0C684");
+            c.setAttribute("fill", "#F2CC6B");
             idleSparks.appendChild(c);
             setTimeout(function (el) { return function () { el.remove(); }; }(c), 1400);
           }
