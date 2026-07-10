@@ -277,6 +277,18 @@
     .kai-spark{animation:sparkRise .95s ease-out forwards}
     @keyframes sparkRise{from{opacity:1;transform:translateY(0) scale(1)}
       to{opacity:0;transform:translateY(-36px) scale(.35)}}
+    /* one lazy ambient sparkle — the page stays alive between interactions */
+    .kai-spark.soft{animation:sparkFloat 2.6s ease-out forwards}
+    @keyframes sparkFloat{0%{opacity:0;transform:translateY(0) scale(.4)}
+      30%{opacity:.85}100%{opacity:0;transform:translateY(-30px) scale(.9)}}
+    /* recovery mood: soft snore clouds drift off as he dozes */
+    .kai-snore{animation:snoreDrift 2.6s ease-out forwards}
+    @keyframes snoreDrift{0%{opacity:0;transform:translate(0,0) scale(.5)}
+      35%{opacity:.6}100%{opacity:0;transform:translate(16px,-24px) scale(1.35)}}
+    /* he notices you: one gentle nod when he first scrolls into view */
+    #kaiSvg.greet #kaiBody{animation:kaiGreet 1s cubic-bezier(.34,1.3,.5,1)}
+    @keyframes kaiGreet{0%{transform:translateY(0)}30%{transform:translateY(-9px)}
+      55%{transform:translateY(-2px)}100%{transform:translateY(0)}}
   }
 </style>
 </head>
@@ -620,6 +632,7 @@
     };
     var RIMS = { coaching: "#EAD7AE", fasting: "#C05244", recovery: "#6FAEBA", celebrating: "#E0C684" };
     var mood = "coaching";
+    kaiSvgEl.dataset.mood = "coaching";
     function sparks() {
       if (calm) return;
       for (var s = 0; s < 6; s++) {
@@ -636,6 +649,7 @@
     }
     function setMood(next) {
       mood = next;
+      kaiSvgEl.dataset.mood = next;
       MOODS.forEach(function (m) { kaiSvgEl.classList.toggle("mood-" + m, m === next); });
       smileEl.setAttribute("d", SMILES[next]);
       document.querySelectorAll(".moodchip").forEach(function (b) {
@@ -682,10 +696,19 @@
     picks.forEach(function (el) { io.observe(el); });
   }
 
-  /* Kai lives — irregular blinks always; eyes follow the cursor when a mouse exists */
+  /* Kai lives — blinks always; cursor-led eyes with a mouse; and, left alone,
+     his own quiet idle life: glances, a sparkle, a nod hello, mood habits. */
   var kai = document.getElementById("kaiSvg");
   var kaiEyes = document.getElementById("kaiEyes");
   if (kai && kaiEyes) {
+    var idleSparks = document.getElementById("kaiSparks");
+    var lastMove = -1e9;                 // touch devices never move it: idle runs freely
+    function onScreen() {
+      var r = kai.getBoundingClientRect();
+      return r.bottom > 40 && r.top < innerHeight - 40;
+    }
+    function mouseLeading() { return Date.now() - lastMove < 2400; }
+
     (function blink() {
       kai.classList.add("blink");
       setTimeout(function () { kai.classList.remove("blink"); }, 150);
@@ -698,6 +721,81 @@
       }
       setTimeout(blink, 2200 + Math.random() * 4200);
     })();
+
+    // Idle gaze — when no one's steering him, his eyes wander and settle back.
+    (function gaze() {
+      if (!calm && !mouseLeading() && onScreen()) {
+        var gx = (Math.random() * 2 - 1) * 3.4, gy = (Math.random() * 2 - 1) * 2;
+        kaiEyes.style.transform = "translate(" + gx + "px," + gy + "px)";
+        setTimeout(function () {
+          if (!mouseLeading()) kaiEyes.style.transform = "";
+        }, 900 + Math.random() * 700);
+      }
+      setTimeout(gaze, 3800 + Math.random() * 4600);
+    })();
+
+    // A rare ambient sparkle keeps the frame breathing between interactions.
+    (function twinkle() {
+      if (!calm && onScreen() && idleSparks) {
+        var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("class", "kai-spark soft");
+        c.setAttribute("cx", String(-26 + Math.random() * 52));
+        c.setAttribute("cy", String(-40 - Math.random() * 6));
+        c.setAttribute("r", String(1.4 + Math.random() * 1.4));
+        c.setAttribute("fill", getComputedStyle(document.getElementById("kaiRim")).stroke);
+        idleSparks.appendChild(c);
+        setTimeout(function () { c.remove(); }, 2800);
+      }
+      setTimeout(twinkle, 14000 + Math.random() * 12000);
+    })();
+
+    // Mood habits — recovery dozes with snore clouds; celebrating keeps sparking.
+    (function moodIdle() {
+      var m = kai.dataset.mood;
+      if (!calm && onScreen() && idleSparks) {
+        if (m === "recovery") {
+          var s = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          s.setAttribute("class", "kai-snore");
+          s.setAttribute("cx", "26"); s.setAttribute("cy", "-6");
+          s.setAttribute("r", String(2 + Math.random() * 1.6));
+          s.setAttribute("fill", "#6FAEBA");
+          idleSparks.appendChild(s);
+          setTimeout(function () { s.remove(); }, 2800);
+        } else if (m === "celebrating") {
+          for (var k = 0; k < 2; k++) {
+            var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            c.setAttribute("class", "kai-spark");
+            c.setAttribute("cx", String(-24 + Math.random() * 48));
+            c.setAttribute("cy", String(-40 - Math.random() * 6));
+            c.setAttribute("r", String(1.6 + Math.random() * 1.6));
+            c.setAttribute("fill", "#E0C684");
+            idleSparks.appendChild(c);
+            setTimeout(function (el) { return function () { el.remove(); }; }(c), 1400);
+          }
+        }
+      }
+      setTimeout(moodIdle, kai.dataset.mood === "celebrating" ? 3200 : 4800);
+    })();
+
+    // He notices you — one gentle nod + a blink the first time he scrolls in.
+    if (!calm && "IntersectionObserver" in window) {
+      var greeted = false;
+      var greeter = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting && !greeted) {
+            greeted = true;
+            kai.classList.add("greet");
+            setTimeout(function () { kai.classList.remove("greet"); }, 1000);
+            setTimeout(function () {
+              kai.classList.add("blink");
+              setTimeout(function () { kai.classList.remove("blink"); }, 150);
+            }, 620);
+            greeter.disconnect();
+          }
+        });
+      }, { threshold: 0.6 });
+      greeter.observe(kai);
+    }
 
     if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
       kai.style.transition = "transform .4s cubic-bezier(.22,.7,.3,1)";
@@ -714,7 +812,7 @@
         kai.style.transform = "translate(" + (dx * 3) + "px," + (dy * 2) + "px) rotate(" + (dx * 2.2) + "deg)";
       }
       addEventListener("mousemove", function (e) {
-        mx = e.clientX; my = e.clientY;
+        mx = e.clientX; my = e.clientY; lastMove = Date.now();
         if (!eyeTick) { eyeTick = true; requestAnimationFrame(lookAt); }
       }, { passive: true });
       document.documentElement.addEventListener("mouseleave", function () {
