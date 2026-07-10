@@ -71,13 +71,19 @@
   .sechead{max-width:620px;margin-bottom:30px}
   .sechead p{margin-top:10px;font-size:16.5px}
 
-  /* Nav */
-  nav{display:flex;align-items:center;gap:22px;padding:20px 0;flex-wrap:wrap}
+  /* Nav — floating frosted-glass capsule, Apple-style */
+  .navwrap{position:sticky;top:14px;z-index:10;margin:14px 0 0}
+  nav{display:flex;align-items:center;gap:22px;padding:10px 18px;flex-wrap:wrap;
+    border-radius:999px;border:1px solid var(--hairline);
+    background:color-mix(in srgb, var(--bg) 62%, transparent);
+    -webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);
+    box-shadow:0 8px 30px rgba(0,0,0,.25)}
   nav .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;color:var(--t1)}
   nav .brand img{width:30px;height:30px;border-radius:8px}
   nav .links{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap}
   nav .links a{color:var(--t2);font-size:14px;font-weight:500}
   nav .links a:hover{color:var(--t1);text-decoration:none}
+  @media (max-width:560px){nav .links{gap:12px} nav .links a{font-size:13px}}
 
   /* Hero */
   .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;padding:56px 0 0}
@@ -180,9 +186,41 @@
   footer a{color:var(--t2)}
   footer .motto{margin:0}
 
+  /* ── The stages — scroll-drawn ring (the signature moment) ── */
+  .stagescroll{height:300vh;position:relative}
+  .stagesticky{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;gap:8px;padding:0 22px}
+  .stagesticky .eyebrow{margin-bottom:2px}
+  .stagesticky h2{max-width:560px}
+  .ringbox{position:relative;width:min(320px,70vw);margin:26px auto 8px}
+  .ringbox svg{width:100%;height:auto;display:block;transform:rotate(-90deg)}
+  .ringbox .track{stroke:var(--hairline)}
+  .ringbox .sweep{stroke:url(#ringgrad);stroke-linecap:round;
+    filter:drop-shadow(0 0 14px rgba(192,82,68,.45))}
+  .ringcenter{position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:2px}
+  .ringcenter .hours{font:700 15px/1 ui-rounded,-apple-system,system-ui,sans-serif;
+    color:var(--eyebrow);letter-spacing:1.4px;font-variant-numeric:tabular-nums}
+  .ringcenter .stage{font:700 clamp(20px,4.4vw,27px)/1.15 ui-rounded,-apple-system,system-ui,sans-serif;
+    max-width:230px;text-wrap:balance}
+  .ringcenter .idx{font-size:11.5px;color:var(--t3);letter-spacing:1.2px;font-variant-numeric:tabular-nums}
+  .stagesticky .hint{font-size:13.5px;color:var(--t3);max-width:440px}
+
+  /* ── Motion — every effect sits behind the same reduced-motion gate ── */
   @media (prefers-reduced-motion: no-preference){
     .reveal{animation:rise .7s ease both}
     @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    /* scroll reveals */
+    .fx{opacity:0;transform:translateY(22px);
+      transition:opacity .75s cubic-bezier(.22,.7,.3,1),transform .75s cubic-bezier(.22,.7,.3,1)}
+    .fx.in{opacity:1;transform:none}
+    .fx.d1{transition-delay:.08s}.fx.d2{transition-delay:.16s}.fx.d3{transition-delay:.24s}
+    /* the hero device breathes */
+    .hero .device{animation:float 7s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    /* the aurora drifts, like the app's backdrop */
+    .aurora{animation:drift 26s ease-in-out infinite alternate}
+    @keyframes drift{from{transform:translate3d(-1.5%,0,0) scale(1.02)}to{transform:translate3d(1.5%,-1%,0) scale(1.06)}}
   }
 </style>
 </head>
@@ -190,6 +228,7 @@
 <div class="aurora"></div>
 <div class="wrap">
 
+<div class="navwrap">
 <nav aria-label="Site">
   <span class="brand"><img src="assets/icon.png" alt="" width="30" height="30">Kairo</span>
   <span class="links">
@@ -200,6 +239,7 @@
     <a href="support.html">Support</a>
   </span>
 </nav>
+</div>
 
 <!-- ───────────────────────── Hero ───────────────────────── -->
 <header class="hero reveal">
@@ -248,6 +288,34 @@
   <p class="loopline"><b>Timers tell you how long. Wearables tell you how rested.</b>
   Kairo owns the sentence in the middle: a workout changes the fast, the fast changes
   recovery, and recovery changes the next workout.</p>
+</section>
+
+<!-- ───────────────── The stages — scroll-drawn ring ───────────────── -->
+<section id="stages" class="stagescroll" aria-label="The ten metabolic stages of a fast">
+  <div class="stagesticky">
+    <p class="eyebrow">Ten metabolic stages</p>
+    <h2>Your body keeps going. Kairo shows you where.</h2>
+    <div class="ringbox" aria-hidden="false">
+      <svg viewBox="0 0 340 340" role="img" aria-label="A fasting ring that fills through the ten stages as you scroll">
+        <defs>
+          <linearGradient id="ringgrad" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#EAD7AE"/>
+            <stop offset="1" stop-color="#C05244"/>
+          </linearGradient>
+        </defs>
+        <circle class="track" cx="170" cy="170" r="150" fill="none" stroke-width="14"/>
+        <circle class="sweep" id="ringSweep" cx="170" cy="170" r="150" fill="none" stroke-width="14"
+                stroke-dasharray="942.48" stroke-dashoffset="0"/>
+      </svg>
+      <div class="ringcenter">
+        <span class="hours" id="ringHours">0–72h+</span>
+        <span class="stage" id="ringStage">Ten stages, one ring</span>
+        <span class="idx" id="ringIdx">SCROLL</span>
+      </div>
+    </div>
+    <p class="hint">Stage timing varies person to person — Kairo teaches each stage as
+    you reach it, with the research one tap away.</p>
+  </div>
 </section>
 
 <!-- ───────────────────────── Screens ───────────────────────── -->
@@ -462,5 +530,66 @@
 </footer>
 
 </div>
+
+<script>
+(function () {
+  "use strict";
+  var calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (calm) return; // reduced motion: the page ships complete and still
+
+  /* Scroll reveals — sections rise in as they arrive, Apple-style */
+  var picks = document.querySelectorAll(
+    ".sechead, .pillar, .loopline, .shot, .kaicard, .quote, .kai .foot, .tcard, .standard, .plan, details"
+  );
+  picks.forEach(function (el, i) {
+    el.classList.add("fx");
+    // grid siblings cascade in threes; standalone blocks rise as one
+    if (el.matches(".pillar, .shot, .tcard, .quote, details")) {
+      el.classList.add("d" + ((i % 3) + 1));
+    }
+  });
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+  picks.forEach(function (el) { io.observe(el); });
+
+  /* The ring draws your fast — scrubbed by scroll through the sticky section */
+  var stages = [
+    ["Digestion", "0–2h"], ["Sugar Decreases", "2–5h"], ["Metabolic Balance", "5–8h"],
+    ["Energy Shift", "8–12h"], ["Fat Burning", "12–18h"], ["Ketosis Transition", "18–24h"],
+    ["Autophagy", "24–48h"], ["Growth Hormone", "48–54h"], ["Insulin Sensitivity", "54–72h"],
+    ["Immune & Stem Cells", "72h+"]
+  ];
+  var C = 942.48;
+  var wrap = document.getElementById("stages");
+  var sweep = document.getElementById("ringSweep");
+  var elStage = document.getElementById("ringStage");
+  var elHours = document.getElementById("ringHours");
+  var elIdx = document.getElementById("ringIdx");
+  if (!wrap || !sweep) return;
+  sweep.style.strokeDashoffset = C; // start empty; scrolling fills it
+  var last = -1, ticking = false;
+  function paint() {
+    ticking = false;
+    var r = wrap.getBoundingClientRect();
+    var span = r.height - innerHeight;
+    var p = Math.min(1, Math.max(0, -r.top / (span > 0 ? span : 1)));
+    sweep.style.strokeDashoffset = String(C * (1 - p));
+    var i = Math.min(stages.length - 1, Math.floor(p * stages.length));
+    if (i !== last) {
+      last = i;
+      elStage.textContent = stages[i][0];
+      elHours.textContent = stages[i][1];
+      elIdx.textContent = "STAGE " + (i + 1) + " OF 10";
+    }
+  }
+  addEventListener("scroll", function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(paint); }
+  }, { passive: true });
+  paint();
+})();
+</script>
 </body>
 </html>
