@@ -151,6 +151,31 @@
     text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.3), 0 0 90px rgba(234,215,174,.10)}
   .kaicard svg{width:170px;height:auto}
   .kaicard .kicker{display:block;margin-top:18px;color:var(--eyebrow)}
+  /* Kai's moods — the app's four states, color first (works even with motion off) */
+  #kaiSvg{cursor:pointer;-webkit-tap-highlight-color:transparent}
+  #kaiRim{transition:stroke .5s ease}
+  .kai-eye{transition:fill .5s ease, transform .16s cubic-bezier(.3,.8,.4,1)}
+  #kaiBody{filter:drop-shadow(0 0 10px rgba(234,215,174,.35));transition:filter .5s ease;
+    transform-box:fill-box;transform-origin:center}
+  #kaiSvg.mood-fasting #kaiRim{stroke:#C05244}
+  #kaiSvg.mood-fasting .kai-eye{fill:#E8C48F}
+  #kaiSvg.mood-fasting #kaiBody{filter:drop-shadow(0 0 11px rgba(192,82,68,.42))}
+  #kaiSvg.mood-recovery #kaiRim{stroke:#6FAEBA}
+  #kaiSvg.mood-recovery .kai-eye{fill:#C6E2E8;transform:scaleY(.55)}
+  #kaiSvg.mood-recovery #kaiBody{filter:drop-shadow(0 0 11px rgba(111,174,186,.4))}
+  #kaiSvg.mood-celebrating #kaiRim{stroke:#E0C684}
+  #kaiSvg.mood-celebrating #kaiBody{filter:drop-shadow(0 0 13px rgba(224,198,132,.5))}
+  .kaimoods{margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .moodchip{font:600 11px/1 -apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    letter-spacing:1.2px;text-transform:uppercase;padding:8px 13px;border-radius:999px;
+    border:1px solid var(--border);background:var(--inner);color:var(--t2);cursor:pointer}
+  .moodchip:focus-visible{outline:2px solid var(--tan);outline-offset:3px}
+  .moodchip.on{color:#000;border-color:transparent}
+  .moodchip[data-mood="coaching"].on{background:#EAD7AE}
+  .moodchip[data-mood="fasting"].on{background:#C05244;color:#fff}
+  .moodchip[data-mood="recovery"].on{background:#6FAEBA}
+  .moodchip[data-mood="celebrating"].on{background:#E0C684}
+
   .quotes{display:grid;gap:12px}
   .quote{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px 18px;
     font-size:15.5px;color:var(--t1);position:relative;overflow:hidden}
@@ -240,10 +265,18 @@
     @keyframes kaiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
     #kaiShadow{animation:kaiShadowBreath 5.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
     @keyframes kaiShadowBreath{0%,100%{transform:scaleX(1);opacity:.4}50%{transform:scaleX(.86);opacity:.28}}
-    .kai-eye{transform-box:fill-box;transform-origin:center;
-      transition:transform .16s cubic-bezier(.3,.8,.4,1)}
+    .kai-eye{transform-box:fill-box;transform-origin:center}
     #kaiSvg.blink .kai-eye{transform:scaleY(.08)}
     #kaiEyes{transition:transform .22s cubic-bezier(.22,.7,.3,1)}
+    /* mood tempo: recovery breathes slower, celebrating bounces */
+    #kaiSvg.mood-recovery #kaiBody{animation-duration:8.5s}
+    #kaiSvg.mood-celebrating #kaiBody{animation-duration:2.4s}
+    /* touch puff + rising sparks (the app's tap response) */
+    #kaiSvg.puff #kaiBody{animation:kaiPuff .5s cubic-bezier(.34,1.56,.64,1)}
+    @keyframes kaiPuff{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
+    .kai-spark{animation:sparkRise .95s ease-out forwards}
+    @keyframes sparkRise{from{opacity:1;transform:translateY(0) scale(1)}
+      to{opacity:0;transform:translateY(-36px) scale(.35)}}
   }
 </style>
 </head>
@@ -407,7 +440,7 @@
         <circle r="64" fill="url(#kh)"/>
         <ellipse id="kaiShadow" cx="0" cy="36" rx="30" ry="5" fill="rgba(0,0,0,.4)"/>
         <g id="kaiBody">
-          <path d="M -46 22 a 18 18 0 0 1 0 -36 a 22 22 0 0 1 20 -18 a 26 26 0 0 1 52 0 a 22 22 0 0 1 20 18 a 18 18 0 0 1 0 36 z"
+          <path id="kaiRim" d="M -46 22 a 18 18 0 0 1 0 -36 a 22 22 0 0 1 20 -18 a 26 26 0 0 1 52 0 a 22 22 0 0 1 20 18 a 18 18 0 0 1 0 36 z"
                 fill="url(#kb)" stroke="#EAD7AE" stroke-width="2.5" stroke-linejoin="round"/>
           <g id="kaiEyes">
             <rect class="kai-eye" x="-22" y="-8" width="9" height="17" rx="4.5" fill="#F6EBD3"/>
@@ -415,8 +448,15 @@
           </g>
           <path id="kaiSmile" d="M -8 16 Q 0 22 8 16" stroke="#F6EBD3" stroke-width="2.6" fill="none" stroke-linecap="round"/>
         </g>
+        <g id="kaiSparks"></g>
       </svg>
       <span class="kicker">KAI · DRAWN ENTIRELY IN CODE</span>
+      <div class="kaimoods" role="group" aria-label="Kai's moods">
+        <button class="moodchip on" data-mood="coaching" type="button">Coaching</button>
+        <button class="moodchip" data-mood="fasting" type="button">Fasting</button>
+        <button class="moodchip" data-mood="recovery" type="button">Recovery</button>
+        <button class="moodchip" data-mood="celebrating" type="button">Celebrating</button>
+      </div>
     </div>
     <div>
       <div class="quotes">
@@ -562,6 +602,61 @@
 (function () {
   "use strict";
   var calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* Kai's moods — the app's four states. Color/expression always work;
+     sparks and the puff are motion, so they sit behind the calm gate. */
+  var kaiSvgEl = document.getElementById("kaiSvg");
+  var sparksEl = document.getElementById("kaiSparks");
+  var smileEl = document.getElementById("kaiSmile");
+  if (kaiSvgEl && sparksEl && smileEl) {
+    var MOODS = ["coaching", "fasting", "recovery", "celebrating"];
+    var SMILES = {
+      coaching: "M -8 16 Q 0 22 8 16",
+      fasting: "M -8 16 Q 0 21 8 16",
+      recovery: "M -7 17 Q 0 20 7 17",
+      celebrating: "M -10 14 Q 0 25 10 14"
+    };
+    var RIMS = { coaching: "#EAD7AE", fasting: "#C05244", recovery: "#6FAEBA", celebrating: "#E0C684" };
+    var mood = "coaching";
+    function sparks() {
+      if (calm) return;
+      for (var s = 0; s < 6; s++) {
+        var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("class", "kai-spark");
+        c.setAttribute("cx", String(-30 + Math.random() * 60));
+        c.setAttribute("cy", String(-42 - Math.random() * 8));
+        c.setAttribute("r", String(1.6 + Math.random() * 1.8));
+        c.setAttribute("fill", RIMS[mood]);
+        c.style.animationDelay = (Math.random() * 0.25) + "s";
+        sparksEl.appendChild(c);
+        setTimeout(function (el) { return function () { el.remove(); }; }(c), 1400);
+      }
+    }
+    function setMood(next) {
+      mood = next;
+      MOODS.forEach(function (m) { kaiSvgEl.classList.toggle("mood-" + m, m === next); });
+      smileEl.setAttribute("d", SMILES[next]);
+      document.querySelectorAll(".moodchip").forEach(function (b) {
+        b.classList.toggle("on", b.dataset.mood === next);
+        b.setAttribute("aria-pressed", b.dataset.mood === next ? "true" : "false");
+      });
+      if (next === "celebrating") sparks();
+    }
+    document.querySelectorAll(".moodchip").forEach(function (b) {
+      b.addEventListener("click", function () { setMood(b.dataset.mood); });
+    });
+    // tapping Kai: the app's puff-and-settle, plus a little spark burst
+    kaiSvgEl.addEventListener("click", function () {
+      if (!calm) {
+        kaiSvgEl.classList.remove("puff");
+        void kaiSvgEl.getBoundingClientRect(); // restart the puff animation
+        kaiSvgEl.classList.add("puff");
+        setTimeout(function () { kaiSvgEl.classList.remove("puff"); }, 550);
+      }
+      sparks();
+    });
+  }
+
   if (calm) return; // reduced motion: the page ships complete and still
 
   /* Scroll reveals — sections rise in as they arrive, Apple-style.
