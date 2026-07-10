@@ -149,7 +149,7 @@
   @media (max-width:760px){.kai{grid-template-columns:1fr}}
   .kaicard{background:var(--card);border:1px solid var(--border);border-radius:28px;padding:36px 20px;
     text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.3), 0 0 90px rgba(234,215,174,.10)}
-  .kaicard svg{width:170px;height:auto}
+  .kaicard svg{width:224px;height:auto;overflow:visible}
   .kaicard .kicker{display:block;margin-top:18px;color:var(--eyebrow)}
   /* Kai's moods — the app's four states, color first (works even with motion off) */
   #kaiSvg{cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -428,13 +428,15 @@
   </div>
   <div class="kai">
     <div class="kaicard">
-      <svg id="kaiSvg" viewBox="-70 -60 140 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kai, Kairo's glowing cloud companion">
+      <svg id="kaiSvg" viewBox="-92 -112 184 204" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kai, Kairo's glowing cloud companion">
         <defs>
           <radialGradient id="kb" cx="0.5" cy="0.42" r="0.75">
             <stop offset="0" stop-color="#2A2620"/><stop offset="1" stop-color="#17140F"/>
           </radialGradient>
           <radialGradient id="kh" cx="0.5" cy="0.5" r="0.5">
-            <stop offset="0" stop-color="rgba(234,215,174,.4)"/><stop offset="1" stop-color="rgba(234,215,174,0)"/>
+            <stop offset="0" stop-color="rgba(234,215,174,.38)"/>
+            <stop offset="0.55" stop-color="rgba(234,215,174,.15)"/>
+            <stop offset="1" stop-color="rgba(234,215,174,0)"/>
           </radialGradient>
         </defs>
         <circle r="64" fill="url(#kh)"/>
