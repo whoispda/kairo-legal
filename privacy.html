@@ -3,90 +3,190 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Kairo's privacy policy. The short version: Kairo doesn't collect your data. No accounts, no ads, no analytics, no tracking.">
 <title>Privacy Policy — Kairo</title>
 <style>
-  :root { color-scheme: light dark; }
-  body { font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-         max-width: 640px; margin: 0 auto; padding: 48px 24px 80px;
-         color: #1c1c1e; background: #ffffff; }
-  @media (prefers-color-scheme: dark) {
-    body { color: #ececec; background: #0b0b0e; }
-    a { color: #d9a87d; }
+  /* Kairo design tokens — source: Kairo Design System/tokens (the app itself). */
+  :root {
+    --kairo-tan:       #CFA47D;
+    --kairo-recovery:  #6FAEBA;
+    --kairo-growth:    #7BB08D;
+    --kairo-ember:     #C05244;
+    --kairo-champagne: #EAD7AE;
+    --bg-app:          #0A0A0D;
+    --surface-card:    #1B1815;
+    --surface-border:  #302B24;
+    --sky-top:         #362B1F;
+    --text-primary:    rgba(255, 255, 255, 0.98);
+    --text-secondary:  rgba(255, 255, 255, 0.62);
+    --text-tertiary:   rgba(255, 255, 255, 0.42);
+    --text-eyebrow:    rgba(234, 215, 174, 0.90);
+    --link:            var(--kairo-tan);
+    color-scheme: dark light;
   }
-  h1 { font-size: 28px; line-height: 1.25; }
-  h2 { font-size: 20px; margin-top: 2em; }
-  a { color: #a06a35; }
-  header p.brand { letter-spacing: 3px; font-size: 12px; font-weight: 600;
-                   color: #8d8a83; margin-bottom: 0; }
-  footer { margin-top: 4em; font-size: 13px; color: #8d8a83;
-           border-top: 1px solid rgba(128,128,128,0.25); padding-top: 1.2em; }
-  ul { padding-left: 1.2em; }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg-app:         #F6F1E8;
+      --surface-card:   #FFFDF9;
+      --surface-border: #E6DCCC;
+      --sky-top:        #EFE3D0;
+      --text-primary:   rgba(28, 24, 18, 0.96);
+      --text-secondary: rgba(28, 24, 18, 0.66);
+      --text-tertiary:  rgba(28, 24, 18, 0.45);
+      --text-eyebrow:   #9C6F3B;
+      --kairo-ember:    #B04A3D;
+      --link:           #9C6F3B;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font: 400 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    color: var(--text-primary);
+    background:
+      linear-gradient(to bottom, var(--sky-top), var(--bg-app) 340px) no-repeat,
+      var(--bg-app);
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 640px; margin: 0 auto; padding: 56px 24px 80px; }
+  .eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 2.4px;
+    color: var(--text-eyebrow); margin: 0 0 24px;
+  }
+  h1 { font-size: 28px; line-height: 1.25; margin: 0 0 6px; letter-spacing: -0.3px; }
+  .effective { font-size: 13px; color: var(--text-tertiary); margin: 0 0 28px; }
+  h2 {
+    font-size: 20px; margin: 2.2em 0 0.5em; letter-spacing: -0.2px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  h2 .dot {
+    width: 8px; height: 8px; border-radius: 4px; flex: none;
+    background: var(--kairo-tan);
+  }
+  h2 .dot.recover { background: var(--kairo-recovery); }
+  h2 .dot.grow    { background: var(--kairo-growth); }
+  h2 .dot.fast    { background: var(--kairo-ember); }
+  p, li { color: var(--text-secondary); }
+  strong { color: var(--text-primary); font-weight: 600; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  ul { padding-left: 1.25em; margin: 0.6em 0 1em; }
+  li { margin: 0.35em 0; }
+  .lead-card {
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: 20px;
+    padding: 20px;
+    margin: 0 0 8px;
+    box-shadow: 0 8px 16px rgba(207, 164, 125, 0.07);
+  }
+  .lead-card p { margin: 0; }
+  footer {
+    margin-top: 4em; font-size: 13px; color: var(--text-tertiary);
+    border-top: 1px solid var(--surface-border); padding-top: 1.4em;
+  }
+  footer a { color: var(--text-secondary); }
 </style>
 </head>
 <body>
-<header><p class="brand">KAIRO · FAST · GROW · RECOVER</p></header>
-<h1>Kairo Privacy Policy</h1>
-<p><strong>Effective date: July 2026</strong></p>
-<p>Kairo is a fasting tracker for iPhone, made by an independent developer. The</p>
-<p>short version: <strong>Kairo does not collect your data.</strong> There are no accounts, no</p>
-<p>ads, no analytics, no tracking, and no third-party services in the app.</p>
-<h2>Data stored on your device</h2>
-<p>Everything you record in Kairo — fasting sessions and history, weight and</p>
-<p>body-fat logs, hydration entries, reminders, plans, and settings — is stored</p>
-<p>locally on your iPhone. It is never transmitted to us. We have no servers and</p>
-<p>no way to see it.</p>
+<div class="page">
+<header><p class="eyebrow">KAIRO · FAST · MOVE · RECOVER</p></header>
+
+<h1>Privacy Policy</h1>
+<p class="effective">Effective July 2026</p>
+
+<div class="lead-card">
+<p><strong>The short version: Kairo doesn't collect your data.</strong>
+No accounts, no ads, no analytics, no tracking, and no third-party
+services. Your fasting story lives on your iPhone — we couldn't read it
+even if we wanted to. The rest of this page just spells that out.</p>
+</div>
+
+<h2><span class="dot"></span>Everything stays on your device</h2>
+<p>Everything you record in Kairo — fasting sessions and history, weight and
+body-fat logs, journal check-ins, sleep logs, hydration, workouts you log,
+plans, reminders, and settings — is stored locally on your iPhone. It is never
+transmitted to us. We have no servers and no way to see it.</p>
 <p>Deleting the app deletes this data.</p>
-<h2>Apple Health (optional)</h2>
-<p>Apple Health is optional and off by default. If you grant permission:</p>
+
+<h2><span class="dot recover"></span>Apple Health — optional, and off until you say so</h2>
+<p>Kairo only touches Apple Health if you grant permission, and you choose
+exactly what to share. If you do:</p>
 <ul>
-<li><strong>Kairo writes</strong> the weight and body-fat entries you log, Focus Mode</li>
+<li><strong>Kairo writes</strong> the weight and body-fat entries you log, your
+Focus Mode sessions as mindful minutes, and the workouts you log in Kairo
+(with their active energy and distance) into Apple Health on your device.</li>
+<li><strong>Kairo reads</strong> sleep, heart-rate variability, resting heart
+rate, active energy, and your workouts (with heart rate and walking, cycling,
+and swimming distances) to understand your recovery and readiness — entirely
+on your device.</li>
 </ul>
-<p>  sessions as mindful minutes, and the workouts you log in Kairo (with their</p>
-<p>  active energy and distance) into the Apple Health app on your device.</p>
+<p>Health data never leaves your iPhone, is never used for marketing, and is
+never shared with anyone — and it is never uploaded to iCloud. You can revoke
+these permissions any time in the iPhone Settings app, and you control the
+data in Apple Health directly.</p>
+
+<h2><span class="dot recover"></span>iCloud sync — your data, your iCloud</h2>
+<p>iCloud sync is off by default. If you turn it on, your fasting history,
+body logs, journal check-ins, and the workouts you logged by hand are stored
+in your personal, private iCloud database, protected by your Apple Account.
+That data belongs to you; we cannot access, read, or share it. Workouts read
+from Apple Health never sync — they stay on each device. Apple's iCloud terms
+and privacy protections apply.</p>
+
+<h2><span class="dot grow"></span>Coach Kai thinks on your phone</h2>
+<p>Kai's insights are generated on your device, using Apple's on-device
+intelligence when available. Your fasting data is never sent to us — or to
+any third party — to produce them.</p>
+
+<h2><span class="dot"></span>Purchases</h2>
+<p>Kairo Labs subscriptions and the Lifetime purchase are processed by Apple
+through your Apple Account. We never see your payment details. Apple's privacy
+policy governs payment processing; Kairo checks your subscription status
+on-device through Apple's StoreKit framework.</p>
+
+<h2><span class="dot"></span>Notifications</h2>
+<p>Reminders — fast completion, daily check-in, plan reminders — are local
+notifications scheduled on your device. No server is involved.</p>
+
+<h2><span class="dot grow"></span>You hold the keys</h2>
 <ul>
-<li><strong>Kairo reads</strong> sleep, heart-rate variability, resting heart rate,</li>
+<li><strong>Export:</strong> Profile → Export My Data gives you your records
+as CSV files, any time.</li>
+<li><strong>Retention:</strong> Keep Raw Logs lets you auto-delete old
+check-in moments and sleep logs on your schedule.</li>
+<li><strong>Erase:</strong> Profile's reset controls permanently erase
+everything on the device — and deleting the app does too.</li>
+<li><strong>Discretion:</strong> Kairo hides your numbers in the iPhone app
+switcher, so your progress stays yours.</li>
 </ul>
-<p>  active energy, and your workouts (with heart rate and walking, cycling, and</p>
-<p>  swimming distances) to compute your readiness and recovery insights —</p>
-<p>  entirely on your device.</p>
-<p>Health data never leaves your iPhone, is never used for marketing, and is</p>
-<p>never shared with anyone. You can revoke these permissions at any time in the</p>
-<p>iPhone Settings app, and you control the data in Apple Health directly.</p>
-<h2>iCloud sync (if offered in your version)</h2>
-<p>If your version of Kairo offers iCloud sync and you enable it, your fasting</p>
-<p>history and body logs are stored in your personal, private iCloud database,</p>
-<p>protected by your Apple Account. That data belongs to you; we cannot access,</p>
-<p>read, or share it. Apple's iCloud terms and privacy protections apply.</p>
-<h2>Coach Insights</h2>
-<p>Coach Insights are generated on your device, using Apple's on-device</p>
-<p>intelligence when available. Your fasting data is not sent to us or to any</p>
-<p>third party to produce them.</p>
-<h2>Purchases</h2>
-<p>Kairo Labs subscriptions and the Lifetime purchase are processed by Apple through your Apple Account.</p>
-<p>We never see your payment details. Apple's privacy policy governs payment</p>
-<p>processing. Kairo checks your subscription status on-device through Apple's</p>
-<p>StoreKit framework.</p>
-<h2>Notifications</h2>
-<p>Reminders (fast completion, daily check-in, plan reminders) are local</p>
-<p>notifications scheduled on your device. They do not involve any server.</p>
-<h2>No tracking</h2>
-<p>Kairo contains no advertising, no analytics SDKs, and no trackers, and it does</p>
-<p>not access the advertising identifier. The App Store privacy label "Data Not</p>
-<p>Collected" applies.</p>
-<h2>Children</h2>
-<p>Kairo is not directed at children and is intended for adults choosing to track</p>
-<p>fasting.</p>
-<h2>Health disclaimer</h2>
-<p>Kairo provides general wellness information only and is not a medical device.</p>
-<p>It does not provide medical advice, diagnosis, or treatment. Consult your</p>
-<p>physician before beginning any fasting practice.</p>
-<h2>Changes to this policy</h2>
-<p>If a future version of Kairo changes how data is handled, this policy will be</p>
-<p>updated at this address before that version ships, with a new effective date.</p>
-<h2>Contact</h2>
-<p>Questions about privacy: <strong><a href="mailto:whoispda@gmail.com">whoispda@gmail.com</a></strong></p>
+
+<h2><span class="dot fast"></span>No tracking. Full stop.</h2>
+<p>Kairo contains no advertising, no analytics SDKs, and no trackers, and it
+does not access the advertising identifier. The App Store privacy label
+<strong>"Data Not Collected"</strong> applies.</p>
+
+<h2><span class="dot"></span>Children</h2>
+<p>Kairo is not directed at children and is intended for adults choosing to
+track fasting.</p>
+
+<h2><span class="dot recover"></span>Health disclaimer</h2>
+<p>Kairo provides general wellness information only and is not a medical
+device. It does not provide medical advice, diagnosis, or treatment. Consult
+your physician before beginning any fasting practice.</p>
+
+<h2><span class="dot"></span>Changes to this policy</h2>
+<p>If a future version of Kairo changes how data is handled, this policy will
+be updated at this address before that version ships, with a new effective
+date.</p>
+
+<h2><span class="dot"></span>Contact</h2>
+<p>Questions about privacy — a human reads these:
+<strong><a href="mailto:whoispda@gmail.com">whoispda@gmail.com</a></strong></p>
+
 <footer>© 2026 Kairo. Kairo provides general wellness information, not medical
 advice. <a href="index.html">Home</a> · <a href="privacy.html">Privacy</a> ·
 <a href="support.html">Support</a></footer>
+</div>
 </body>
 </html>

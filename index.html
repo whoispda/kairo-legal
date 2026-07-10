@@ -3,37 +3,464 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kairo — Kairo</title>
+<meta name="description" content="Kairo — the fasting app that adapts to your recovery. Your workout changes your fast. Private, on-device, honest by design. For iPhone.">
+<meta property="og:title" content="Kairo — This workout means fast differently tomorrow.">
+<meta property="og:description" content="The only fasting app that adapts the fast to your recovery. Private, on-device, honest by design.">
+<meta property="og:image" content="https://whoispda.github.io/kairo-legal/assets/tools-01-active-deep.jpg">
+<meta property="og:type" content="website">
+<title>Kairo — Fasting that adapts to your recovery</title>
+<link rel="icon" href="assets/icon.png">
+<link rel="apple-touch-icon" href="assets/icon.png">
 <style>
-  :root { color-scheme: light dark; }
-  body { font: 17px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-         max-width: 640px; margin: 0 auto; padding: 48px 24px 80px;
-         color: #1c1c1e; background: #ffffff; }
-  @media (prefers-color-scheme: dark) {
-    body { color: #ececec; background: #0b0b0e; }
-    a { color: #d9a87d; }
+  /* Kairo design tokens — source: Kairo Design System/tokens (the app itself).
+     Dark is the brand default; the warm-cream light companion follows the system. */
+  :root {
+    --tan:       #CFA47D;
+    --recovery:  #6FAEBA;
+    --growth:    #7BB08D;
+    --ember:     #C05244;
+    --champagne: #EAD7AE;
+    --bg:        #0A0A0D;
+    --card:      #1B1815;
+    --border:    #302B24;
+    --inner:     #12100B;
+    --hairline:  rgba(255,255,255,.06);
+    --t1: rgba(255,255,255,.98);
+    --t2: rgba(255,255,255,.62);
+    --t3: rgba(255,255,255,.42);
+    --eyebrow: rgba(234,215,174,.90);
+    --link: var(--tan);
+    --kick-ember:#C05244; --kick-growth:#7BB08D; --kick-recovery:#6FAEBA; --kick-tan:#CFA47D;
+    --glow:.9;
+    color-scheme: dark light;
   }
-  h1 { font-size: 28px; line-height: 1.25; }
-  h2 { font-size: 20px; margin-top: 2em; }
-  a { color: #a06a35; }
-  header p.brand { letter-spacing: 3px; font-size: 12px; font-weight: 600;
-                   color: #8d8a83; margin-bottom: 0; }
-  footer { margin-top: 4em; font-size: 13px; color: #8d8a83;
-           border-top: 1px solid rgba(128,128,128,0.25); padding-top: 1.2em; }
-  ul { padding-left: 1.2em; }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg:#F6F1E8; --card:#FFFDF9; --border:#E6DCCC; --inner:#F0E9DC;
+      --hairline:rgba(64,50,34,.10);
+      --t1:#221B13; --t2:rgba(34,27,19,.64); --t3:rgba(34,27,19,.44);
+      --eyebrow:#9A7842; --link:#9C6F3B; --ember:#B04A3D;
+      --kick-ember:#A54438; --kick-growth:#4A7D5C; --kick-recovery:#3F7885; --kick-tan:#9C6F3B;
+      --glow:.4;
+    }
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--t1);
+    font:400 17px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  /* Aurora — the app's canvas, never flat */
+  .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:var(--glow);
+    background:
+      radial-gradient(46% 30% at 14% 4%, rgba(192,82,68,.15), transparent 70%),
+      radial-gradient(40% 26% at 88% 12%, rgba(111,174,186,.12), transparent 70%),
+      radial-gradient(52% 34% at 50% 100%, rgba(123,176,141,.09), transparent 72%);}
+  .wrap{position:relative;z-index:1;max-width:1020px;margin:0 auto;padding:0 22px}
+
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:var(--eyebrow)}
+  .kicker{font-size:11px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase}
+  h1{font:700 clamp(34px,6.4vw,56px)/1.08 ui-rounded,-apple-system,system-ui,sans-serif;letter-spacing:-.8px;text-wrap:balance}
+  h2{font:700 clamp(24px,3.4vw,32px)/1.18 ui-rounded,-apple-system,system-ui,sans-serif;letter-spacing:-.4px;text-wrap:balance}
+  h3{font-size:17px;font-weight:650}
+  p{color:var(--t2)}
+  a{color:var(--link);text-decoration:none}
+  a:hover{text-decoration:underline}
+  section{padding:74px 0 0}
+  .sechead{max-width:620px;margin-bottom:30px}
+  .sechead p{margin-top:10px;font-size:16.5px}
+
+  /* Nav */
+  nav{display:flex;align-items:center;gap:22px;padding:20px 0;flex-wrap:wrap}
+  nav .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;color:var(--t1)}
+  nav .brand img{width:30px;height:30px;border-radius:8px}
+  nav .links{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap}
+  nav .links a{color:var(--t2);font-size:14px;font-weight:500}
+  nav .links a:hover{color:var(--t1);text-decoration:none}
+
+  /* Hero */
+  .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;padding:56px 0 0}
+  @media (max-width:800px){.hero{grid-template-columns:1fr;padding-top:36px}}
+  .hero h1 em{font-style:normal;color:var(--champagne)}
+  @media (prefers-color-scheme: light){.hero h1 em{color:var(--kick-tan)}}
+  .hero .sub{margin-top:16px;font-size:18px;max-width:460px}
+  .motto{margin-top:20px}
+  .motto .f{color:var(--kick-ember)} .motto .m{color:var(--kick-growth)}
+  .motto .r{color:var(--kick-recovery)} .motto .dot{color:var(--t3);padding:0 7px}
+  .cta{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-block;border-radius:16px;padding:14px 24px;font-weight:650;font-size:15.5px;
+    text-decoration:none}
+  .btn:hover{text-decoration:none}
+  .btn.primary{background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0) 46%),var(--tan);
+    color:#000;box-shadow:0 10px 28px rgba(207,164,125,.28), inset 0 0 0 1px rgba(255,255,255,.18)}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn.ghost{border:1px solid var(--border);color:var(--t1);background:var(--card)}
+  .cta .soon{font-size:12.5px;color:var(--t3);width:100%}
+  .device{border-radius:44px;border:3px solid #26221C;outline:1px solid rgba(255,255,255,.09);
+    overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 90px rgba(192,82,68,.18);
+    max-width:340px;margin:0 auto}
+  @media (prefers-color-scheme: light){.device{border-color:#D8CCB8;outline-color:rgba(64,50,34,.12);
+    box-shadow:0 30px 70px rgba(64,50,34,.22), 0 0 90px rgba(192,82,68,.10)}}
+  .device img{display:block;width:100%;height:auto}
+
+  /* Loop pillars */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media (max-width:700px){.pillars{grid-template-columns:1fr}}
+  .pillar{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;
+    position:relative;overflow:hidden}
+  .pillar::before{content:"";position:absolute;left:0;top:16px;bottom:16px;width:3px;border-radius:3px;
+    background:var(--pc)}
+  .pillar .name{font-size:11px;font-weight:700;letter-spacing:1.6px;margin-bottom:8px;color:var(--t1)}
+  .pillar p{font-size:14.5px}
+  .loopline{margin-top:22px;font-size:17px;color:var(--t2);max-width:640px}
+  .loopline b{color:var(--t1)}
+
+  /* Screens rail */
+  .rail{display:grid;grid-auto-flow:column;grid-auto-columns:min(240px,68vw);gap:20px;
+    overflow-x:auto;padding:6px 6px 22px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+  .rail::-webkit-scrollbar{height:8px}
+  .rail::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+  .shot{scroll-snap-align:start}
+  .shot .device{border-radius:34px;max-width:none;box-shadow:0 18px 50px rgba(0,0,0,.45), 0 0 60px var(--sg,rgba(192,82,68,.12))}
+  .shot figcaption{margin-top:12px;font-size:14px;font-weight:600;color:var(--t1);text-align:center}
+  .shot .sub{font-size:12px;color:var(--t3);text-align:center;margin-top:2px}
+
+  /* Kai */
+  .kai{display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center}
+  @media (max-width:760px){.kai{grid-template-columns:1fr}}
+  .kaicard{background:var(--card);border:1px solid var(--border);border-radius:28px;padding:36px 20px;
+    text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.3), 0 0 90px rgba(234,215,174,.10)}
+  .kaicard svg{width:170px;height:auto}
+  .kaicard .kicker{display:block;margin-top:18px;color:var(--eyebrow)}
+  .quotes{display:grid;gap:12px}
+  .quote{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:15px 18px;
+    font-size:15.5px;color:var(--t1);position:relative;overflow:hidden}
+  .quote::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:3px;border-radius:3px;background:var(--qc,var(--champagne))}
+  .quote small{display:block;color:var(--t3);font-size:12px;margin-top:4px;font-weight:500}
+  .kai .foot{margin-top:16px;font-size:14.5px}
+
+  /* Trust */
+  .trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .tcard{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:22px}
+  .tcard h3{margin-bottom:8px}
+  .tcard h3 span{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:9px;background:var(--tc,var(--tan))}
+  .tcard p{font-size:14.5px}
+  .standard{margin-top:16px;border:1px solid var(--border);background:var(--inner);border-radius:16px;
+    padding:16px 20px;font-size:15px;color:var(--t2)}
+  .standard b{color:var(--eyebrow)}
+
+  /* Pricing */
+  .plans{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+  @media (max-width:700px){.plans{grid-template-columns:1fr}}
+  .plan{background:var(--card);border:1px solid var(--border);border-radius:28px;padding:28px;position:relative;overflow:hidden}
+  .plan.labs{border-color:rgba(234,215,174,.4);
+    background:linear-gradient(180deg,rgba(234,215,174,.06),rgba(234,215,174,0) 40%),var(--card);
+    box-shadow:0 24px 60px rgba(0,0,0,.3), 0 0 80px rgba(234,215,174,.08)}
+  .plan .price{font:700 34px/1 ui-rounded,-apple-system,system-ui,sans-serif;margin:12px 0 2px}
+  .plan .per{font-size:13px;color:var(--t3)}
+  .plan ul{list-style:none;margin-top:18px}
+  .plan li{font-size:14.5px;color:var(--t2);padding:5px 0 5px 24px;position:relative}
+  .plan li::before{content:"✓";position:absolute;left:0;font-weight:700;color:var(--pc,var(--growth))}
+  .plan .note{margin-top:16px;font-size:12.5px;color:var(--t3)}
+
+  /* FAQ */
+  .faq{display:grid;gap:10px;max-width:760px}
+  details{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 20px}
+  summary{cursor:pointer;font-weight:600;color:var(--t1);font-size:15.5px;list-style:none;position:relative;padding-right:26px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";position:absolute;right:2px;top:-2px;color:var(--eyebrow);font-size:20px;font-weight:400}
+  details[open] summary::after{content:"–"}
+  details p{margin-top:10px;font-size:14.5px}
+  summary:focus-visible{outline:2px solid var(--tan);outline-offset:4px;border-radius:6px}
+
+  footer{margin-top:84px;border-top:1px solid var(--border);padding:26px 0 56px;
+    font-size:13.5px;color:var(--t3)}
+  footer .cols{display:flex;gap:24px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+  footer a{color:var(--t2)}
+  footer .motto{margin:0}
+
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{animation:rise .7s ease both}
+    @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  }
 </style>
 </head>
 <body>
-<header><p class="brand">KAIRO · FAST · GROW · RECOVER</p></header>
-<h1>Kairo</h1>
-<p><strong>Fast · Grow · Recover.</strong> Smart, recovery-aware fasting —
-private, on your iPhone.</p>
-<ul>
-<li><a href="privacy.html">Privacy Policy</a></li>
-<li><a href="support.html">Support</a></li>
-</ul>
-<footer>© 2026 Kairo. Kairo provides general wellness information, not medical
-advice. <a href="index.html">Home</a> · <a href="privacy.html">Privacy</a> ·
-<a href="support.html">Support</a></footer>
+<div class="aurora"></div>
+<div class="wrap">
+
+<nav aria-label="Site">
+  <span class="brand"><img src="assets/icon.png" alt="" width="30" height="30">Kairo</span>
+  <span class="links">
+    <a href="#screens">The app</a>
+    <a href="#kai">Coach Kai</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#labs">Kairo Labs</a>
+    <a href="support.html">Support</a>
+  </span>
+</nav>
+
+<!-- ───────────────────────── Hero ───────────────────────── -->
+<header class="hero reveal">
+  <div>
+    <p class="eyebrow">The fasting app that adapts to your recovery</p>
+    <h1 style="margin-top:14px">This workout means <em>fast differently</em> tomorrow.</h1>
+    <p class="sub">Every other app is a fasting timer <em>or</em> a recovery tracker.
+    Kairo connects them — so the fast you start today actually fits the body you
+    bring to it.</p>
+    <p class="motto kicker"><span class="f">Fast</span><span class="dot">·</span><span class="m">Move</span><span class="dot">·</span><span class="r">Recover</span></p>
+    <div class="cta">
+      <a class="btn primary" href="mailto:whoispda@gmail.com?subject=Kairo%20launch%20—%20keep%20me%20posted&body=Tell%20me%20when%20Kairo%20is%20on%20the%20App%20Store.">Get notified at launch</a>
+      <a class="btn ghost" href="#screens">See the app</a>
+      <span class="soon">Coming soon to the App Store for iPhone · free to start, no account ever</span>
+    </div>
+  </div>
+  <div class="device">
+    <img src="assets/tools-01-active-deep.jpg" width="1206" height="2622"
+         alt="Kairo's live fasting ring nine hours into a fast, showing the Energy Shift stage">
+  </div>
+</header>
+
+<!-- ───────────────────────── The loop ───────────────────────── -->
+<section id="loop">
+  <div class="sechead">
+    <p class="eyebrow">The Kairo loop</p>
+    <h2>Three pillars. One loop. Only Kairo closes it.</h2>
+  </div>
+  <div class="pillars">
+    <div class="pillar" style="--pc:var(--ember)">
+      <p class="name">FAST</p>
+      <p>A live timer through 10 metabolic stages — and a daily window that eases
+      when your recovery says so, instead of demanding the same hours every day.</p>
+    </div>
+    <div class="pillar" style="--pc:var(--growth)">
+      <p class="name">MOVE</p>
+      <p>Log a workout and Kai answers on the spot with what it means for
+      tomorrow's fast. Training fasted or fed? Your own history holds the answer.</p>
+    </div>
+    <div class="pillar" style="--pc:var(--recovery)">
+      <p class="name">RECOVER</p>
+      <p>Sleep and heart-rate variability become a readiness score that always
+      shows its why — from Apple Health, with or without a wearable.</p>
+    </div>
+  </div>
+  <p class="loopline"><b>Timers tell you how long. Wearables tell you how rested.</b>
+  Kairo owns the sentence in the middle: a workout changes the fast, the fast changes
+  recovery, and recovery changes the next workout.</p>
+</section>
+
+<!-- ───────────────────────── Screens ───────────────────────── -->
+<section id="screens">
+  <div class="sechead">
+    <p class="eyebrow">Real screens</p>
+    <h2>No invented UI. No fabricated numbers.</h2>
+    <p>Everything below is the shipping app. Swipe through.</p>
+  </div>
+  <div class="rail" role="list">
+    <figure class="shot" role="listitem" style="--sg:rgba(111,174,186,.14)">
+      <div class="device"><img loading="lazy" src="assets/mascot-00-premium-fasthome.jpg" width="1206" height="2622" alt="Fast tab: Daily Fast Fit recommendation with today's recovery"></div>
+      <figcaption>The right fast for today</figcaption>
+      <p class="sub">shaped by sleep &amp; HRV — with its why</p>
+    </figure>
+    <figure class="shot" role="listitem" style="--sg:rgba(192,82,68,.16)">
+      <div class="device"><img loading="lazy" src="assets/tools-01-active-deep.jpg" width="1206" height="2622" alt="Active fast nine hours in, Energy Shift stage"></div>
+      <figcaption>A live timer through 10 stages</figcaption>
+      <p class="sub">what your body is doing, hour by hour</p>
+    </figure>
+    <figure class="shot" role="listitem" style="--sg:rgba(111,174,186,.16)">
+      <div class="device"><img loading="lazy" src="assets/04-insights-home.jpg" width="1206" height="2622" alt="Recover tab: top insight and Coach Kai's briefing"></div>
+      <figcaption>A coach who remembers</figcaption>
+      <p class="sub">your month, told in your own numbers</p>
+    </figure>
+    <figure class="shot" role="listitem" style="--sg:rgba(207,164,125,.16)">
+      <div class="device"><img loading="lazy" src="assets/tools-02-stages-map.jpg" width="1206" height="2622" alt="The fasting stages map with cited science"></div>
+      <figcaption>Every claim links to real science</figcaption>
+      <p class="sub">one tap from the research on PubMed</p>
+    </figure>
+    <figure class="shot" role="listitem" style="--sg:rgba(123,176,141,.16)">
+      <div class="device"><img loading="lazy" src="assets/survey-01-plans.jpg" width="1206" height="2622" alt="Guided programs: 14-Day Foundations, 28-Day Reset, Weekday 16:8"></div>
+      <figcaption>Programs that adapt to you</figcaption>
+      <p class="sub">multi-day journeys that ease off when you need it</p>
+    </figure>
+    <figure class="shot" role="listitem" style="--sg:rgba(207,164,125,.16)">
+      <div class="device"><img loading="lazy" src="assets/05-profile-home.jpg" width="1206" height="2622" alt="Profile with the Trust Center: no account, on device"></div>
+      <figcaption>Private. No account. Ever.</figcaption>
+      <p class="sub">the Trust Center — right in the app</p>
+    </figure>
+    <figure class="shot" role="listitem" style="--sg:rgba(123,176,141,.14)">
+      <div class="device"><img loading="lazy" src="assets/light-tools-01.jpg" width="1206" height="2622" alt="The active fast in Kairo's warm light appearance"></div>
+      <figcaption>Follows your day — and your system</figcaption>
+      <p class="sub">the same calm, in warm cream</p>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────────────────── Kai ───────────────────────── -->
+<section id="kai">
+  <div class="sechead">
+    <p class="eyebrow">Coach Kai</p>
+    <h2>Not another tracker. A coach who remembers.</h2>
+  </div>
+  <div class="kai">
+    <div class="kaicard">
+      <svg viewBox="-70 -60 140 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kai, Kairo's glowing cloud companion">
+        <defs>
+          <radialGradient id="kb" cx="0.5" cy="0.42" r="0.75">
+            <stop offset="0" stop-color="#2A2620"/><stop offset="1" stop-color="#17140F"/>
+          </radialGradient>
+          <radialGradient id="kh" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0" stop-color="rgba(234,215,174,.4)"/><stop offset="1" stop-color="rgba(234,215,174,0)"/>
+          </radialGradient>
+        </defs>
+        <circle r="64" fill="url(#kh)"/>
+        <path d="M -46 22 a 18 18 0 0 1 0 -36 a 22 22 0 0 1 20 -18 a 26 26 0 0 1 52 0 a 22 22 0 0 1 20 18 a 18 18 0 0 1 0 36 z"
+              fill="url(#kb)" stroke="#EAD7AE" stroke-width="2.5" stroke-linejoin="round"/>
+        <rect x="-22" y="-8" width="9" height="17" rx="4.5" fill="#F6EBD3"/>
+        <rect x="13" y="-8" width="9" height="17" rx="4.5" fill="#F6EBD3"/>
+        <path d="M -8 16 Q 0 22 8 16" stroke="#F6EBD3" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        <ellipse cx="0" cy="36" rx="30" ry="5" fill="rgba(0,0,0,.4)"/>
+      </svg>
+      <span class="kicker">KAI · DRAWN ENTIRELY IN CODE</span>
+    </div>
+    <div>
+      <div class="quotes">
+        <div class="quote" style="--qc:var(--growth)">"Nice work. That was a hard fasted run — a gentler
+          fast tomorrow may fit better while you recover."
+          <small>after you log a workout</small></div>
+        <div class="quote" style="--qc:var(--recovery)">"When sleep ran short, you eased instead of pushing —
+          and recovery paid it back within days."
+          <small>your story, told back in your own numbers</small></div>
+        <div class="quote" style="--qc:var(--ember)">"Pause the fast, keep the streak. No penalties, no judgment."
+          <small>Recovery Mode — kindness as a feature</small></div>
+      </div>
+      <p class="foot">Kai is a private, on-device AI — built on Apple's own
+      on-device intelligence. He answers from cited research and your own data,
+      hedges when he isn't sure, and says "I don't have enough data yet" instead of
+      making something up. Nothing you tell him ever leaves your phone.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── Privacy ───────────────────────── -->
+<section id="privacy">
+  <div class="sechead">
+    <p class="eyebrow">The Kairo standard</p>
+    <h2>Honest by design. Private by default.</h2>
+  </div>
+  <div class="trust">
+    <div class="tcard"><h3><span style="--tc:var(--tan)"></span>No account. Ever.</h3>
+      <p>Nothing to sign up for. Kairo works with the Apple ID already on your phone.</p></div>
+    <div class="tcard"><h3><span style="--tc:var(--recovery)"></span>On your device</h3>
+      <p>Your fasts, workouts, journal, and every AI conversation stay on the phone.
+      Optional iCloud sync goes only to <em>your</em> private iCloud.</p></div>
+    <div class="tcard"><h3><span style="--tc:var(--growth)"></span>Real data only</h3>
+      <p>No invented trends, no fake social proof. The Kairo Score never shows a
+      number without showing why.</p></div>
+    <div class="tcard"><h3><span style="--tc:var(--ember)"></span>Cited science</h3>
+      <p>Every scientific claim links to peer-reviewed research — one tap to PubMed.</p></div>
+  </div>
+  <p class="standard"><b>No ads. No data sales. No tracking.</b> Read the two-minute
+  <a href="privacy.html">privacy policy</a> — the short version is: we don't collect
+  your data. Really.</p>
+</section>
+
+<!-- ───────────────────────── Pricing ───────────────────────── -->
+<section id="labs">
+  <div class="sechead">
+    <p class="eyebrow">Free to start · Kairo Labs for depth</p>
+    <h2>Premium buys depth, never the timer.</h2>
+  </div>
+  <div class="plans">
+    <div class="plan" style="--pc:var(--growth)">
+      <p class="eyebrow">Kairo</p>
+      <p class="price">Free</p>
+      <p class="per">forever</p>
+      <ul>
+        <li>Live fasting timer with all 10 metabolic stages</li>
+        <li>Streaks, history &amp; milestone awards</li>
+        <li>Hydration, reminders &amp; Live Activity</li>
+        <li>Sleep logging in five seconds</li>
+        <li>The "Health for Everyone" learning track</li>
+      </ul>
+      <p class="note">A genuinely great fasting app — not a demo.</p>
+    </div>
+    <div class="plan labs" style="--pc:var(--tan)">
+      <p class="eyebrow">Kairo Labs</p>
+      <p class="price">$59.99<span style="font-size:15px;color:var(--t3)"> / year</span></p>
+      <p class="per">about $5 a month · or $9.99 monthly · 7-day free trial on yearly</p>
+      <ul>
+        <li>Adaptive fasting — the window eases when recovery is low</li>
+        <li>Daily readiness from your sleep &amp; HRV</li>
+        <li>Coach Kai — private, on-device AI coaching</li>
+        <li>Training-aware guidance &amp; explainable trends</li>
+        <li>Advanced protocols, multi-day Programs &amp; the full cited library</li>
+        <li>Watch &amp; widget extras, milestone cards, Kai's colors</li>
+      </ul>
+      <p class="note">One membership. Every feature included — no add-ons.
+      Cancel anytime; Apple sends the trial reminder.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── FAQ ───────────────────────── -->
+<section id="faq">
+  <div class="sechead">
+    <p class="eyebrow">Questions, answered plainly</p>
+    <h2>The things people actually ask</h2>
+  </div>
+  <div class="faq">
+    <details>
+      <summary>Do I need an Apple Watch, WHOOP, or Oura?</summary>
+      <p>No. If you wear one, keep its app syncing to Apple Health and Kairo reads
+      those signals automatically — no extra login. If you don't, Kairo still knows
+      how you slept, because you told it — a five-second log tunes today's fast.</p>
+    </details>
+    <details>
+      <summary>What happens to my data?</summary>
+      <p>It stays on your phone. There's no account, no server of ours, no analytics
+      trackers. Optional iCloud sync uses your private iCloud. You can export or
+      erase everything from inside the app. Details in the
+      <a href="privacy.html">privacy policy</a>.</p>
+    </details>
+    <details>
+      <summary>Is the AI coach sending my conversations somewhere?</summary>
+      <p>No. Coach Kai runs on Apple's on-device model — the conversation happens
+      on your iPhone's own chip and never leaves it. That's also why he's unlimited
+      rather than metered.</p>
+    </details>
+    <details>
+      <summary>What's actually free?</summary>
+      <p>The whole core loop: the live timer with all ten stages, streaks, history,
+      awards, hydration, reminders, sleep logging, and the learning track. Kairo Labs
+      adds the intelligence — readiness, adaptive windows, Coach Kai, programs, and
+      the full cited library.</p>
+    </details>
+    <details>
+      <summary>Is fasting right for me?</summary>
+      <p>Not always — and Kairo won't pretend otherwise. If you're pregnant, have a
+      history of disordered eating, or manage a medical condition, talk to a
+      professional first. Kairo provides general wellness education, not medical
+      advice.</p>
+    </details>
+    <details>
+      <summary>When can I get it?</summary>
+      <p>Kairo is finishing beta and coming soon to the App Store for iPhone.
+      <a href="mailto:whoispda@gmail.com?subject=Kairo%20launch%20—%20keep%20me%20posted">Drop a line</a>
+      and you'll hear the day it's live.</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="cols">
+    <span>© 2026 Kairo. General wellness information, not medical advice.</span>
+    <p class="motto kicker"><span class="f" style="color:var(--kick-ember)">Fast</span><span class="dot" style="color:var(--t3);padding:0 7px">·</span><span class="m" style="color:var(--kick-growth)">Move</span><span class="dot" style="color:var(--t3);padding:0 7px">·</span><span class="r" style="color:var(--kick-recovery)">Recover</span></p>
+    <span><a href="privacy.html">Privacy</a> · <a href="support.html">Support</a> ·
+    <a href="mailto:whoispda@gmail.com">Contact</a></span>
+  </div>
+</footer>
+
+</div>
 </body>
 </html>
