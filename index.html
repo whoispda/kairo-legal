@@ -221,6 +221,17 @@
     /* the aurora drifts, like the app's backdrop */
     .aurora{animation:drift 26s ease-in-out infinite alternate}
     @keyframes drift{from{transform:translate3d(-1.5%,0,0) scale(1.02)}to{transform:translate3d(1.5%,-1%,0) scale(1.06)}}
+
+    /* ── Kai lives: float, breath-shadow, irregular blinks, cursor-led eyes ── */
+    #kaiBody{animation:kaiFloat 5.5s ease-in-out infinite;will-change:transform;
+      transition:none}
+    @keyframes kaiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    #kaiShadow{animation:kaiShadowBreath 5.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+    @keyframes kaiShadowBreath{0%,100%{transform:scaleX(1);opacity:.4}50%{transform:scaleX(.86);opacity:.28}}
+    .kai-eye{transform-box:fill-box;transform-origin:center;
+      transition:transform .16s cubic-bezier(.3,.8,.4,1)}
+    #kaiSvg.blink .kai-eye{transform:scaleY(.08)}
+    #kaiEyes{transition:transform .22s cubic-bezier(.22,.7,.3,1)}
   }
 </style>
 </head>
@@ -372,7 +383,7 @@
   </div>
   <div class="kai">
     <div class="kaicard">
-      <svg viewBox="-70 -60 140 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kai, Kairo's glowing cloud companion">
+      <svg id="kaiSvg" viewBox="-70 -60 140 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Kai, Kairo's glowing cloud companion">
         <defs>
           <radialGradient id="kb" cx="0.5" cy="0.42" r="0.75">
             <stop offset="0" stop-color="#2A2620"/><stop offset="1" stop-color="#17140F"/>
@@ -382,12 +393,16 @@
           </radialGradient>
         </defs>
         <circle r="64" fill="url(#kh)"/>
-        <path d="M -46 22 a 18 18 0 0 1 0 -36 a 22 22 0 0 1 20 -18 a 26 26 0 0 1 52 0 a 22 22 0 0 1 20 18 a 18 18 0 0 1 0 36 z"
-              fill="url(#kb)" stroke="#EAD7AE" stroke-width="2.5" stroke-linejoin="round"/>
-        <rect x="-22" y="-8" width="9" height="17" rx="4.5" fill="#F6EBD3"/>
-        <rect x="13" y="-8" width="9" height="17" rx="4.5" fill="#F6EBD3"/>
-        <path d="M -8 16 Q 0 22 8 16" stroke="#F6EBD3" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-        <ellipse cx="0" cy="36" rx="30" ry="5" fill="rgba(0,0,0,.4)"/>
+        <ellipse id="kaiShadow" cx="0" cy="36" rx="30" ry="5" fill="rgba(0,0,0,.4)"/>
+        <g id="kaiBody">
+          <path d="M -46 22 a 18 18 0 0 1 0 -36 a 22 22 0 0 1 20 -18 a 26 26 0 0 1 52 0 a 22 22 0 0 1 20 18 a 18 18 0 0 1 0 36 z"
+                fill="url(#kb)" stroke="#EAD7AE" stroke-width="2.5" stroke-linejoin="round"/>
+          <g id="kaiEyes">
+            <rect class="kai-eye" x="-22" y="-8" width="9" height="17" rx="4.5" fill="#F6EBD3"/>
+            <rect class="kai-eye" x="13" y="-8" width="9" height="17" rx="4.5" fill="#F6EBD3"/>
+          </g>
+          <path id="kaiSmile" d="M -8 16 Q 0 22 8 16" stroke="#F6EBD3" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+        </g>
       </svg>
       <span class="kicker">KAI · DRAWN ENTIRELY IN CODE</span>
     </div>
@@ -537,10 +552,11 @@
   var calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (calm) return; // reduced motion: the page ships complete and still
 
-  /* Scroll reveals — sections rise in as they arrive, Apple-style */
-  var picks = document.querySelectorAll(
+  /* Scroll reveals — sections rise in as they arrive, Apple-style.
+     Never hide content a browser can't reveal: no observer, no .fx. */
+  var picks = "IntersectionObserver" in window ? document.querySelectorAll(
     ".sechead, .pillar, .loopline, .shot, .kaicard, .quote, .kai .foot, .tcard, .standard, .plan, details"
-  );
+  ) : [];
   picks.forEach(function (el, i) {
     el.classList.add("fx");
     // grid siblings cascade in threes; standalone blocks rise as one
@@ -548,12 +564,55 @@
       el.classList.add("d" + ((i % 3) + 1));
     }
   });
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
-  picks.forEach(function (el) { io.observe(el); });
+  if (picks.length) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+    picks.forEach(function (el) { io.observe(el); });
+  }
+
+  /* Kai lives — irregular blinks always; eyes follow the cursor when a mouse exists */
+  var kai = document.getElementById("kaiSvg");
+  var kaiEyes = document.getElementById("kaiEyes");
+  if (kai && kaiEyes) {
+    (function blink() {
+      kai.classList.add("blink");
+      setTimeout(function () { kai.classList.remove("blink"); }, 150);
+      // one blink in ten is a quick double — the app's irregular-blink feel
+      if (Math.random() < 0.1) {
+        setTimeout(function () {
+          kai.classList.add("blink");
+          setTimeout(function () { kai.classList.remove("blink"); }, 140);
+        }, 330);
+      }
+      setTimeout(blink, 2200 + Math.random() * 4200);
+    })();
+
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      kai.style.transition = "transform .4s cubic-bezier(.22,.7,.3,1)";
+      var eyeTick = false, mx = 0, my = 0;
+      function lookAt() {
+        eyeTick = false;
+        var r = kai.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) return; // off-screen: rest
+        var dx = (mx - (r.left + r.width / 2)) / (innerWidth / 2);
+        var dy = (my - (r.top + r.height / 2)) / (innerHeight / 2);
+        dx = Math.max(-1, Math.min(1, dx)); dy = Math.max(-1, Math.min(1, dy));
+        // eyes glance (viewBox units), the whole cloud leans a breath behind
+        kaiEyes.style.transform = "translate(" + (dx * 4) + "px," + (dy * 2.6) + "px)";
+        kai.style.transform = "translate(" + (dx * 3) + "px," + (dy * 2) + "px) rotate(" + (dx * 2.2) + "deg)";
+      }
+      addEventListener("mousemove", function (e) {
+        mx = e.clientX; my = e.clientY;
+        if (!eyeTick) { eyeTick = true; requestAnimationFrame(lookAt); }
+      }, { passive: true });
+      document.documentElement.addEventListener("mouseleave", function () {
+        kaiEyes.style.transform = ""; kai.style.transform = "";
+      });
+    }
+  }
 
   /* The ring draws your fast — scrubbed by scroll through the sticky section */
   var stages = [
