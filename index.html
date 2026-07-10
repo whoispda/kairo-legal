@@ -83,7 +83,19 @@
   nav .links{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap}
   nav .links a{color:var(--t2);font-size:14px;font-weight:500}
   nav .links a:hover{color:var(--t1);text-decoration:none}
-  @media (max-width:560px){nav .links{gap:12px} nav .links a{font-size:13px}}
+  /* Small screens: one slim row — brand + Support. The section links are
+     scroll shortcuts; on a phone the page IS the scroll. Solid enough glass
+     that nothing ghosts through the capsule. */
+  @media (max-width:700px){
+    .navwrap{top:10px}
+    nav{padding:8px 14px;gap:10px;flex-wrap:nowrap;
+      background:color-mix(in srgb, var(--bg) 86%, transparent)}
+    nav .brand{font-size:16px}
+    nav .brand img{width:26px;height:26px}
+    nav .links{gap:0}
+    nav .links a{display:none}
+    nav .links a[href="support.html"]{display:inline;font-size:14px}
+  }
 
   /* Hero */
   .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center;padding:56px 0 0}
