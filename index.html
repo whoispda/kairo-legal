@@ -153,10 +153,10 @@
   .kaicard .kicker{display:block;margin-top:18px;color:var(--eyebrow)}
   /* Kai's moods — the app's four states, color first (works even with motion off).
      The rim is the app's champagne outline; --kai-rim carries the mood colour. */
-  #kaiSvg{cursor:pointer;-webkit-tap-highlight-color:transparent;--kai-rim:#EAD7AE}
+  #kaiSvg{cursor:pointer;-webkit-tap-highlight-color:transparent;--kai-rim:#EFE7D2}
   #kaiRim>*{fill:var(--kai-rim);transition:fill .5s ease}
   .kai-eye{transition:fill .5s ease, transform .16s cubic-bezier(.3,.8,.4,1)}
-  #kaiBody{filter:drop-shadow(0 0 10px rgba(234,215,174,.35));transition:filter .5s ease;
+  #kaiBody{filter:drop-shadow(0 0 10px rgba(239,231,210,.32));transition:filter .5s ease;
     transform-box:fill-box;transform-origin:center}
   #kaiSvg.mood-fasting{--kai-rim:#C05244}
   #kaiSvg.mood-fasting .kai-eye{fill:#E8C48F}
@@ -173,7 +173,7 @@
     border:1px solid var(--border);background:var(--inner);color:var(--t2);cursor:pointer}
   .moodchip:focus-visible{outline:2px solid var(--tan);outline-offset:3px}
   .moodchip.on{color:#000;border-color:transparent}
-  .moodchip[data-mood="coaching"].on{background:#EAD7AE}
+  .moodchip[data-mood="coaching"].on{background:#EFE7D2}
   .moodchip[data-mood="fasting"].on{background:#C05244;color:#fff}
   .moodchip[data-mood="recovery"].on{background:#6FAEBA}
   .moodchip[data-mood="celebrating"].on{background:#F2CC6B}
@@ -651,7 +651,7 @@
       recovery: "M -4 14 Q 0 16.5 4 14",
       celebrating: "M -6 12 Q 0 19 6 12"
     };
-    var RIMS = { coaching: "#EAD7AE", fasting: "#C05244", recovery: "#6FAEBA", celebrating: "#F2CC6B" };
+    var RIMS = { coaching: "#EFE7D2", fasting: "#C05244", recovery: "#6FAEBA", celebrating: "#F2CC6B" };
     var mood = "coaching";
     kaiSvgEl.dataset.mood = "coaching";
     function sparks() {
@@ -763,7 +763,7 @@
         c.setAttribute("cx", String(-26 + Math.random() * 52));
         c.setAttribute("cy", String(-40 - Math.random() * 6));
         c.setAttribute("r", String(1.4 + Math.random() * 1.4));
-        c.setAttribute("fill", getComputedStyle(kai).getPropertyValue("--kai-rim").trim() || "#EAD7AE");
+        c.setAttribute("fill", getComputedStyle(kai).getPropertyValue("--kai-rim").trim() || "#EFE7D2");
         idleSparks.appendChild(c);
         setTimeout(function () { c.remove(); }, 2800);
       }
