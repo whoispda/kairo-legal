@@ -6,12 +6,33 @@
 <meta name="description" content="Kairo — the fasting app that adapts to your recovery. Your workout changes your fast. Private, on-device, honest by design. For iPhone.">
 <meta property="og:title" content="Kairo — This workout means fast differently tomorrow.">
 <meta property="og:description" content="The only fasting app that adapts the fast to your recovery. Private, on-device, honest by design.">
+<meta property="og:site_name" content="Kairo">
 <meta property="og:image" content="https://kairofasting.com/assets/tools-01-active-deep.jpg">
+<meta property="og:image:alt" content="Kairo's live fasting ring, nine hours into a fast">
 <meta property="og:url" content="https://kairofasting.com/">
 <meta property="og:type" content="website">
-<title>Kairo — Fasting that adapts to your recovery</title>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kairo — This workout means fast differently tomorrow.">
+<meta name="twitter:description" content="The only fasting app that adapts the fast to your recovery. Private, on-device, iOS exclusive.">
+<meta name="twitter:image" content="https://kairofasting.com/assets/tools-01-active-deep.jpg">
+<link rel="canonical" href="https://kairofasting.com/">
+<title>Kairo — Fasting that adapts to your recovery · iPhone</title>
 <link rel="icon" href="assets/icon.png">
 <link rel="apple-touch-icon" href="assets/icon.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "Kairo",
+  "alternateName": "Kairo: Fasting & Recovery",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "iOS",
+  "description": "The only fasting app that adapts the fast to your recovery. Fasting, training and recovery connected — private, on-device, honest by design.",
+  "url": "https://kairofasting.com/",
+  "image": "https://kairofasting.com/assets/icon.png",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
 <style>
   /* Kairo design tokens — source: Kairo Design System/tokens (the app itself).
      Dark is the brand default; the warm-cream light companion follows the system. */
@@ -119,6 +140,16 @@
   .btn.primary:hover{filter:brightness(1.05)}
   .btn.ghost{border:1px solid var(--border);color:var(--t1);background:var(--card)}
   .cta .soon{font-size:12.5px;color:var(--t3);width:100%}
+  /* Email signup (Buttondown) */
+  .signup{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;width:100%;max-width:460px}
+  .signup input[type=email]{flex:1 1 200px;min-width:0;padding:14px 16px;border-radius:16px;
+    border:1px solid var(--border);background:var(--inner);color:var(--t1);font-size:15px}
+  .signup input[type=email]::placeholder{color:var(--t3)}
+  .signup input[type=email]:focus{outline:2px solid var(--tan);outline-offset:1px;border-color:transparent}
+  .signup .btn{white-space:nowrap}
+  .signup-ok{color:var(--growth);font-weight:650;font-size:15px;margin-top:2px}
+  .closing .signup{margin:0 auto}
+  .closing .signup-ok{text-align:center}
   .device{border-radius:44px;border:3px solid #26221C;outline:1px solid rgba(255,255,255,.09);
     overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55), 0 0 90px rgba(168,90,75,.18);
     max-width:340px;margin:0 auto}
@@ -407,9 +438,12 @@
     bring to it.</p>
     <p class="motto kicker"><span class="f">Fast</span><span class="dot">·</span><span class="m">Move</span><span class="dot">·</span><span class="r">Recover</span></p>
     <div class="cta">
-      <a class="btn primary" href="mailto:hello@kairofasting.com?subject=Kairo%20beta%20list%20—%20save%20me%20a%20spot&body=Add%20me%20to%20the%20Kairo%20beta%20list%20—%20I'd%20love%20early%20access%20when%20it%20opens.%20(iPhone%20model%20and%20iOS%20version%20optional.)">Join the beta list</a>
-      <a class="btn ghost" href="mailto:hello@kairofasting.com?subject=Kairo%20launch%20—%20keep%20me%20posted&body=Tell%20me%20when%20Kairo%20is%20on%20the%20App%20Store.">Notify me at launch</a>
-      <span class="soon">TestFlight beta coming soon · iPhone only, proudly iOS exclusive · free to start, no account ever</span>
+      <form class="signup" action="https://buttondown.email/api/emails/embed-subscribe/KairoFasting" method="post" target="_blank">
+        <input type="email" name="email" required placeholder="you@email.com" autocomplete="email" aria-label="Your email">
+        <button type="submit" class="btn primary">Join the beta list</button>
+      </form>
+      <p class="signup-ok" hidden>You're on the list — check your inbox to confirm. See you in the beta. ✓</p>
+      <span class="soon">Beta invites + launch news · iPhone only, proudly iOS exclusive · no spam, unsubscribe anytime</span>
     </div>
   </div>
   <div class="device">
@@ -895,10 +929,10 @@
     </details>
     <details>
       <summary>How do I get it — and when?</summary>
-      <p>A private TestFlight beta is opening soon.
-      <a href="mailto:hello@kairofasting.com?subject=Kairo%20beta%20list%20—%20save%20me%20a%20spot&body=Add%20me%20to%20the%20Kairo%20beta%20list.">Get on the beta list</a>
-      to be first in, or <a href="mailto:hello@kairofasting.com?subject=Kairo%20launch%20—%20keep%20me%20posted">get a ping at launch</a>.
-      The full release is coming to the App Store — iPhone only, and proudly so: Kairo is built natively for iOS, not ported from anywhere.</p>
+      <p>A private TestFlight beta is opening soon. Add your email to the
+      <a href="#close">beta list</a> and you'll be first in, plus a heads-up the
+      day it hits the App Store. iPhone only, and proudly so: Kairo is built
+      natively for iOS, not ported from anywhere.</p>
     </details>
   </div>
 </section>
@@ -911,9 +945,12 @@
     <p>Private. Native. A new player in health, built to earn your trust —
     and to turn everything you already do into results you can see.</p>
     <div class="cta" style="justify-content:center">
-      <a class="btn primary" href="mailto:hello@kairofasting.com?subject=Kairo%20beta%20list%20—%20save%20me%20a%20spot&body=Add%20me%20to%20the%20Kairo%20beta%20list%20—%20I'd%20love%20early%20access%20when%20it%20opens.%20(iPhone%20model%20and%20iOS%20version%20optional.)">Join the beta list</a>
-      <a class="btn ghost" href="mailto:hello@kairofasting.com?subject=Kairo%20launch%20—%20keep%20me%20posted&body=Tell%20me%20when%20Kairo%20is%20on%20the%20App%20Store.">Notify me at launch</a>
-      <span class="soon" style="text-align:center">Get on the list for the TestFlight beta, or hear the day it lands on the App Store · iOS exclusive · no account ever</span>
+      <form class="signup" action="https://buttondown.email/api/emails/embed-subscribe/KairoFasting" method="post" target="_blank">
+        <input type="email" name="email" required placeholder="you@email.com" autocomplete="email" aria-label="Your email">
+        <button type="submit" class="btn primary">Join the beta list</button>
+      </form>
+      <p class="signup-ok" hidden>You're on the list — check your inbox to confirm. See you in the beta. ✓</p>
+      <span class="soon" style="text-align:center">Beta invites + launch news · iPhone only, proudly iOS exclusive · no spam, unsubscribe anytime</span>
     </div>
     <p style="margin-top:22px;font-weight:650;color:var(--champagne);font-family:ui-rounded,-apple-system,system-ui,sans-serif;font-size:19px">Time to see the results.</p>
   </div>
@@ -1225,6 +1262,26 @@
       g.querySelectorAll(".tchip").forEach(function (x) { x.classList.toggle("on", x === b); });
       sel[g.dataset.group === "goal" ? "goal" : "rec"] = b.dataset.v;
       compute();
+    });
+  });
+})();
+</script>
+
+<script>
+/* Email signup — progressive enhancement: POST to Buttondown in the background
+   and show an inline confirmation instead of opening a new tab. Without JS the
+   form still works as a normal POST (target=_blank to Buttondown's page). */
+(function () {
+  "use strict";
+  document.querySelectorAll("form.signup").forEach(function (f) {
+    f.addEventListener("submit", function (e) {
+      var email = f.querySelector("input[type=email]");
+      if (!email || !email.checkValidity()) return; // let native validation show
+      e.preventDefault();
+      fetch(f.action, { method: "POST", body: new FormData(f), mode: "no-cors" }).catch(function () {});
+      var ok = f.parentNode.querySelector(".signup-ok");
+      f.hidden = true;
+      if (ok) ok.hidden = false;
     });
   });
 })();
