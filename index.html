@@ -280,6 +280,31 @@
   .closing p{max-width:540px;margin:0 auto 26px;font-size:16.5px}
   .pilltag{display:inline-flex;gap:0;margin-bottom:22px;font-size:11px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase}
 
+  /* ── Try-it widget: what would Kai suggest? ── */
+  .trycard{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0) 40%),var(--card);
+    border:1px solid var(--border);border-radius:28px;padding:28px 24px}
+  .tryq{margin-bottom:20px}
+  .tql{font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--eyebrow);margin-bottom:12px}
+  .tchips{display:flex;flex-wrap:wrap;gap:10px}
+  .tchip{font:600 14px/1 -apple-system,BlinkMacSystemFont,system-ui,sans-serif;padding:11px 16px;border-radius:999px;
+    border:1px solid var(--border);background:var(--inner);color:var(--t1);cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+  .tchip:hover{border-color:var(--tan)}
+  .tchip.on{background:var(--tan);color:#000;border-color:transparent}
+  .tchip:focus-visible{outline:2px solid var(--tan);outline-offset:3px}
+  .tryout{display:flex;gap:16px;align-items:center;margin-top:8px;padding:20px;border-radius:20px;
+    background:var(--inner);border:1px solid var(--border)}
+  .tryout .wkai{flex:none;width:76px}
+  .tryout .wkai svg{width:76px;height:auto;overflow:visible;--wrim:#EFE7D2}
+  .wkai .wrim>*{fill:var(--wrim);transition:fill .4s ease}
+  .wkai.wm-rough svg{--wrim:#7FA6AD}
+  .wkai.wm-rough .weyes rect{transform:scaleY(.5);transform-box:fill-box;transform-origin:center}
+  .trywindow{font:700 18px/1.3 ui-rounded,-apple-system,system-ui,sans-serif;color:var(--t1);margin-bottom:4px}
+  .trywindow b{color:var(--champagne)}
+  .tryline{font-size:14.5px;color:var(--t2);line-height:1.5}
+  .tryfoot{margin-top:14px;font-size:13.5px;color:var(--t3)}
+  .tryfoot a{color:var(--tan);font-weight:600;white-space:nowrap}
+  @media (max-width:520px){.tryout{flex-direction:column;text-align:center}}
+
   footer{margin-top:84px;border-top:1px solid var(--border);padding:26px 0 56px;
     font-size:13.5px;color:var(--t3)}
   footer .cols{display:flex;gap:24px;flex-wrap:wrap;justify-content:space-between;align-items:center}
@@ -494,6 +519,68 @@
       <h3>Your workouts</h3>
       <p>Every session read automatically — and turned into what it means for tomorrow.</p>
     </div>
+  </div>
+</section>
+
+<!-- ───────────────── Try it: what would Kai suggest? ───────────────── -->
+<section id="try">
+  <div class="sechead">
+    <p class="eyebrow">See it think</p>
+    <h2>What would Kai suggest for you?</h2>
+    <p>A quick taste of the real thing — tell Kai two things and watch the fast change.</p>
+  </div>
+  <div class="trycard">
+    <div class="tryq">
+      <p class="tql">I'm here to…</p>
+      <div class="tchips" data-group="goal">
+        <button class="tchip" type="button" data-v="start">Get started</button>
+        <button class="tchip" type="button" data-v="lose">Lose weight</button>
+        <button class="tchip" type="button" data-v="train">Train hard</button>
+        <button class="tchip" type="button" data-v="energy">Feel sharper</button>
+      </div>
+    </div>
+    <div class="tryq">
+      <p class="tql">Last night I…</p>
+      <div class="tchips" data-group="rec">
+        <button class="tchip" type="button" data-v="good">Slept great</button>
+        <button class="tchip" type="button" data-v="mid">Slept so-so</button>
+        <button class="tchip" type="button" data-v="rough">Had a rough night</button>
+      </div>
+    </div>
+    <div class="tryout" id="tryOut" hidden>
+      <div class="wkai" id="wkai">
+        <svg viewBox="-92 -112 184 204" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="wkb" gradientUnits="userSpaceOnUse" cx="0" cy="-8" r="48">
+              <stop offset="0" stop-color="#2A2620"/><stop offset="1" stop-color="#17140F"/>
+            </radialGradient>
+            <radialGradient id="wkh" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="rgba(234,215,174,.30)"/><stop offset="1" stop-color="rgba(234,215,174,0)"/>
+            </radialGradient>
+          </defs>
+          <circle r="58" fill="url(#wkh)"/>
+          <ellipse cx="0" cy="34" rx="30" ry="5" fill="rgba(0,0,0,.35)"/>
+          <g class="wrim">
+            <rect x="-44.2" y="3.8" width="88.4" height="26.4" rx="13.2"/>
+            <circle cx="-22" cy="0" r="18.2"/><circle cx="2" cy="-8" r="22.2"/><circle cx="24" cy="1" r="16.2"/>
+          </g>
+          <g fill="url(#wkb)">
+            <rect x="-42" y="6" width="84" height="22" rx="11"/>
+            <circle cx="-22" cy="0" r="16"/><circle cx="2" cy="-8" r="20"/><circle cx="24" cy="1" r="14"/>
+          </g>
+          <g class="weyes">
+            <rect x="-11.4" y="-3.7" width="6.9" height="11" rx="3.45" fill="#F6EBD3"/>
+            <rect x="4.5" y="-3.7" width="6.9" height="11" rx="3.45" fill="#F6EBD3"/>
+          </g>
+          <path d="M -5 13 Q 0 17 5 13" stroke="#F6EBD3" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <p class="trywindow" id="tryWin"></p>
+        <p class="tryline" id="tryLine"></p>
+      </div>
+    </div>
+    <p class="tryfoot" id="tryFoot" hidden>In the app, Kairo tunes this from your real sleep, HRV and workouts — every day. <a href="mailto:hello@kairofasting.com?subject=Kairo%20beta%20list%20—%20save%20me%20a%20spot&body=Add%20me%20to%20the%20Kairo%20beta%20list.">Join the beta list →</a></p>
   </div>
 </section>
 
@@ -1086,6 +1173,60 @@
     if (!ticking) { ticking = true; requestAnimationFrame(paint); }
   }, { passive: true });
   paint();
+})();
+</script>
+
+<script>
+/* Try-it widget — a taste of the app's recovery-aware recommendation.
+   Standalone (runs regardless of motion prefs; it's interaction, not animation). */
+(function () {
+  "use strict";
+  var out = document.getElementById("tryOut");
+  if (!out) return;
+  var foot = document.getElementById("tryFoot");
+  var winEl = document.getElementById("tryWin");
+  var lineEl = document.getElementById("tryLine");
+  var wk = document.getElementById("wkai");
+  var sel = { goal: null, rec: null };
+  var BASE = { start: "12:12", lose: "16:8", train: "16:8", energy: "14:10" };
+  var EASE = { "18:6": "16:8", "16:8": "14:10", "14:10": "12:12", "12:12": "12:12" };
+
+  function compute() {
+    if (!sel.goal || !sel.rec) return;
+    var w = BASE[sel.goal];
+    if (sel.rec === "rough") w = EASE[w];                      // a rough night eases the fast
+    else if (sel.rec === "mid" && sel.goal === "train") w = EASE[w];
+
+    var msg;
+    if (sel.rec === "rough") {
+      msg = "Rough night — let's ease off to a " + w + " window today. A gentler fast protects tomorrow, and your streak keeps going either way.";
+    } else if (sel.goal === "train") {
+      msg = sel.rec === "good"
+        ? "You're recovered and ready — " + w + " suits a training day. Protein-first when you break it to speed repair."
+        : "Training on so-so sleep — " + w + " keeps it honest without overreaching.";
+    } else if (sel.goal === "lose") {
+      msg = "A steady " + w + " tends to fit weight goals — no crash dieting, just a window your body can keep.";
+    } else if (sel.goal === "energy") {
+      msg = "A " + w + " window holds energy even without the mid-morning dip. Hydrate early and you'll feel it.";
+    } else {
+      msg = "New to this? A " + w + " window is a kind place to begin — build the rhythm first, stretch it later.";
+    }
+    winEl.innerHTML = "Kai suggests <b>" + w + "</b> today";
+    lineEl.textContent = msg;
+    wk.className = "wkai" + (sel.rec === "rough" ? " wm-rough" : "");
+    out.hidden = false;
+    foot.hidden = false;
+  }
+
+  document.querySelectorAll("#try .tchips").forEach(function (g) {
+    g.addEventListener("click", function (e) {
+      var b = e.target.closest(".tchip");
+      if (!b) return;
+      g.querySelectorAll(".tchip").forEach(function (x) { x.classList.toggle("on", x === b); });
+      sel[g.dataset.group === "goal" ? "goal" : "rec"] = b.dataset.v;
+      compute();
+    });
+  });
 })();
 </script>
 </body>
