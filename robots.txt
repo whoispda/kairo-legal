@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /full-site/
 
 Sitemap: https://kairofasting.com/sitemap.xml
